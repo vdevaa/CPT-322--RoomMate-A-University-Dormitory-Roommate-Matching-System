@@ -117,7 +117,7 @@ roommate-app/
 
 ## Team Members
 
-- [Add team member names here]
+- Vijay Deva, Logan Straight, Will Colson, London Zaineb
 
 ## License
 
