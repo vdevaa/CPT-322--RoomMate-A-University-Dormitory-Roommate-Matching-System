@@ -2,9 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import WelcomeScreen from './src/screens/WelcomeScreen';
-import ProfileScreen from './src/screens/ProfileScreen';
-import PreferencesScreen from './src/screens/PreferencesScreen';
+import { ProfileScreen, WelcomeScreen, PreferencesScreen } from './src/Screens.js'
 
 const Stack = createStackNavigator();
 
