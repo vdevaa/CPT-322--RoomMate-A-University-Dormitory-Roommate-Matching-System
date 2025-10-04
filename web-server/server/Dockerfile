@@ -1,11 +1,4 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
-# https://nodejs.org/en/about/releases/
-# https://github.com/nodejs/Release#readme
+# they opps forced me to write my own dockerfile because theirs wasnt working its a tough scene out here
 FROM node:20-alpine3.19
 
 WORKDIR /usr/src/server
