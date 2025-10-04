@@ -23,9 +23,9 @@ export default function WelcomeScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.button, styles.secondaryButton]} 
-          onPress={() => navigation.navigate('Preferences')}
+          onPress={() => navigation.navigate('Login')}
         >
-          <Text style={styles.secondaryButtonText}>Skip to Preferences</Text>
+          <Text style={styles.secondaryButtonText}>Log in</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     backgroundColor: 'transparent',
-    borderWidth: 2,
+    borderWidth: 0,
+    shadowOpacity:0,
     borderColor: '#E34234',
   },
   secondaryButtonText: {
