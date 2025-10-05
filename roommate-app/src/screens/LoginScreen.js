@@ -15,6 +15,7 @@ export default function LoginScreen({ navigation }) {
   // api params
   const [userNameData, setUserNameData] = useState('');
   const [passwordData, setPasswordData] = useState('');
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   return (
     // move these text inputs into component files later for now we will store data here though
     <SafeAreaView style={styles.container}>
@@ -22,23 +23,38 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.title}>Log in</Text>
         <TextInput
           style={styles.textinput} 
-          placeholder="Username"
+          placeholder="Username or Email"
           value={userNameData}
-          onChangeText={setUserNameData}
+          onChangeText=
+          {(text) => {
+              setUserNameData(text);
+              if(userNameData !='' && passwordData != ''){
+                setButtonDisabled(false);
+              }
+          }}
+          required
         />
         <TextInput
           style={styles.textinput} 
           secureTextEntry={true}
           placeholder="Password"
           value={passwordData}
-          onChangeText={setPasswordData}
+          onChangeText=
+          {(text) => {
+            setPasswordData(text);
+              if(userNameData !='' && passwordData != ''){
+                setButtonDisabled(false)
+              }
+          }}
+          required
         />
         <TouchableOpacity 
-          style={styles.button}
+          style={buttonDisabled ? styles.buttonDisabled : styles.button}
+          disabled = {buttonDisabled}
           // straight back to the welcome screen until we get a home screen
           onPress={() => 
           {
-
+            
             fetch(API_URL, {
               method: 'POST',
               headers: {
@@ -108,6 +124,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     marginBottom: 15,
+  },
+  buttonDisabled: {
+    backgroundColor: '#E34234',
+    paddingHorizontal: 40,
+    marginTop:20,
+    paddingVertical: 10,
+    borderRadius: 25,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    marginBottom: 15,
+    opacity: 0.5
   },
   buttonText: {
     color: '#fff',
