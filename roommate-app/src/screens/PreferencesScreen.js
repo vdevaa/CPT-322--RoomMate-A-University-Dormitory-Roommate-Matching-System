@@ -83,17 +83,17 @@ export default function PreferencesScreen({ navigation, route }) {
   };
 
   const isFormValid = () => {
-    return true;
+    return preferences.cleanliness !== '';
   };
 
 
   const handleContinue = () => {
     if (!isFormValid()) {
-      Alert.alert('Missing Information', 'Please select all required choices.');
+      Alert.alert('Please enter ALL required information and try again.');
       return;
     }
     Alert.alert(
-      'Profile Complete!',
+      'Successfully completed compatibility test!',
       'Your roommate preferences have been saved successfully. You can review and edit them anytime.',
       [
         { text: 'OK', onPress: () => navigation.navigate('Welcome') }
@@ -103,13 +103,13 @@ export default function PreferencesScreen({ navigation, route }) {
 
   const renderQuestion = (category) => {
     const questionData = compatibilityQuestions[category];
-    // const isRequired = category === 'requiredCategory';
+    const isRequired = category === 'cleanliness';
     
     return (
       <View style={styles.optionGroup}>
         <Text style={styles.questionText}>
           {questionData.question}
-          {/* {isRequired && <Text style={styles.required}> *</Text>} */}
+          {isRequired && <Text style={styles.required}> *</Text>}
         </Text>
         <View style={styles.optionContainer}>
           {questionData.options.map((option) => (
@@ -179,9 +179,9 @@ export default function PreferencesScreen({ navigation, route }) {
         </View>
 
         <TouchableOpacity 
-          style={[styles.button, !isFormValid() && styles.buttonDisabled]} 
+          style={[styles.button]} 
           onPress={handleContinue}
-          disabled={!isFormValid()}
+          // disabled={!isFormValid()}
         >
           <Text style={styles.buttonText}>
             {completedQuestions === totalQuestions ? 'Complete Test & Find Matches' : 'Save Progress'}
