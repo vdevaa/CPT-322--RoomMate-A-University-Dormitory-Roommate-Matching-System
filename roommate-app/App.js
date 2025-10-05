@@ -1,8 +1,10 @@
+
+
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { ProfileScreen, WelcomeScreen, PreferencesScreen } from './src/Screens.js'
+import { ProfileScreen, WelcomeScreen, PreferencesScreen, LoginScreen } from './src/Screens.js'
 
 const Stack = createStackNavigator();
 
@@ -36,6 +38,11 @@ export default function App() {
           name="Preferences" 
           component={PreferencesScreen} 
           options={{ title: 'Preferences' }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ title: 'Login' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
