@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
+import Navbar from '../components/Navbar';
 
 export default function WelcomeScreen({ navigation }) {
   return (
@@ -28,6 +29,7 @@ export default function WelcomeScreen({ navigation }) {
           <Text style={styles.secondaryButtonText}>Log in</Text>
         </TouchableOpacity>
       </View>
+      <Navbar navigation={navigation} active={'Home'} />
     </SafeAreaView>
   );
 }
