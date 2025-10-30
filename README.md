@@ -82,9 +82,8 @@ roommate-app/
 ├── assets/               # Images and static files
 └── src/
     └── screens/          # App screens
-        ├── WelcomeScreen.js
-        ├── ProfileScreen.js
-        └── PreferencesScreen.js
+    └── components/       # modular components 
+        
 ```
 
 ## Technologies Used
@@ -93,32 +92,12 @@ roommate-app/
 - **Expo** - Development platform
 - **React Navigation** - Navigation library
 
-## Troubleshooting
-
-### Common Issues
-
-1. **"Expo CLI not found"**
-   - Run: `npm install -g expo-cli`
-
-2. **"Module not found" errors**
-   - Delete `node_modules` folder and `package-lock.json`
-   - Run: `npm install` again
-
-3. **Port already in use**
-   - The default port (19000) is in use
-   - Kill the process or use: `expo start --port 19001`
-
-## Contributing
-
-1. Create a new branch for your feature: `git checkout -b feature-name`
-2. Make your changes and commit: `git commit -m "Add feature"`
-3. Push to your branch: `git push origin feature-name`
-4. Create a Pull Request
 
 ## Team Members
 
-- Vijay Deva, Logan Straight, Will Colson, London Zaineb
+- Vijay Deva, Logan Straight, London Zaineb
 
 ## License
 
 This project is for educational purposes as part of CPT-322 course work.
+
