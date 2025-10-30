@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import styles from '../styles/Navbar.styles';
 
 // Basic bottom navbar. Pass `navigation` from a screen and optionally `active` to highlight the current tab.
 export default function Navbar({ navigation, active = 'Home' }) {
   const tabs = [
     { key: 'Home', label: 'Home', onPress: () => navigation.navigate('Home') },
     { key: 'Profile', label: 'Profile', onPress: () => navigation.navigate('Profile') },
-    { key: 'Messages', label: 'Messages', onPress: () => navigation.navigate('Profile') },
+    { key: 'Messages', label: 'Messages', onPress: () => navigation.navigate('Messages') },
     // add more labels to the navbar here if needed, for now routing is to placeholders
   ];
 
@@ -30,31 +31,5 @@ export default function Navbar({ navigation, active = 'Home' }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#e6e6e6',
-    backgroundColor: '#fff',
-  },
-  tab: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  tabText: {
-    color: '#555',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  tabTextActive: {
-    color: '#E34234',
-    fontSize: 14,
-    fontWeight: '800',
-  },
-});
+ 
 

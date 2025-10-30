@@ -4,3 +4,5 @@ export {default as ProfileScreen} from './screens/ProfileScreen.js';
 export {default as PreferencesScreen} from './screens/PreferencesScreen.js';
 export {default as LoginScreen} from './screens/LoginScreen.js';
 export {default as HomeScreen} from './screens/HomeScreen.js';
+export {default as MessagesScreen} from './screens/MessagesScreen.js';
+export {default as ChatScreen} from './screens/ChatScreen.js';
