@@ -96,7 +96,7 @@ export default function PreferencesScreen({ navigation, route }) {
       'Successfully completed compatibility test!',
       'Your roommate preferences have been saved successfully. You can review and edit them anytime.',
       [
-        { text: 'OK', onPress: () => navigation.navigate('Welcome') }
+        { text: 'OK', onPress: () => navigation.navigate('Home') }
       ]
     );
   };
