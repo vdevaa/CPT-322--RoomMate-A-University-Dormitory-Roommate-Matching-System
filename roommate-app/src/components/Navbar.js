@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 // Basic bottom navbar. Pass `navigation` from a screen and optionally `active` to highlight the current tab.
 export default function Navbar({ navigation, active = 'Home' }) {
   const tabs = [
-    { key: 'Home', label: 'Home', onPress: () => navigation.navigate('Welcome') },
+    { key: 'Home', label: 'Home', onPress: () => navigation.navigate('Home') },
     { key: 'Profile', label: 'Profile', onPress: () => navigation.navigate('Profile') },
     { key: 'Messages', label: 'Messages', onPress: () => navigation.navigate('Profile') },
     // add more labels to the navbar here if needed, for now routing is to placeholders

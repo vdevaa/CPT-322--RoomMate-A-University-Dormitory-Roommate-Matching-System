@@ -68,7 +68,7 @@ export default function LoginScreen({ navigation }) {
               .then(response => response.json()) 
               .then(data => console.log('Success:', data))
               .catch(error => console.error('Error:', error));
-            navigation.navigate('Welcome')
+            navigation.navigate('Home')
             // call api
             // check result for session token; store session token in storage for home screen
             // if api does not respond with one then throw error

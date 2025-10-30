@@ -4,7 +4,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { ProfileScreen, WelcomeScreen, PreferencesScreen, LoginScreen } from './src/Screens.js'
+import { ProfileScreen, WelcomeScreen, PreferencesScreen, LoginScreen, HomeScreen } from './src/Screens.js'
 
 const Stack = createStackNavigator();
 
@@ -28,6 +28,11 @@ export default function App() {
           name="Welcome" 
           component={WelcomeScreen} 
           options={{ title: 'Roommate Match' }}
+        />
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ title: 'Home' }}
         />
         <Stack.Screen 
           name="Profile" 
