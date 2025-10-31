@@ -1,27 +1,103 @@
-STEP 1 - go to project folder
-cd "...\roommate-backend"
-Your file location
+# RoomMate - University Dormitory Roommate Matching System
 
-STEP 2 - build and start containers
-docker compose up -d --build
+A React Native mobile application designed to help university students find compatible roommates for dormitory living.
 
-STEP 3 - verify API is running
-curl http://localhost:8438/api/health
+## Group Project - CPT 322
 
-STEP 4 - seed example residents
-docker compose exec api npm run seed
+## Prerequisites
 
-STEP 5 - login to test
-curl -X POST http://localhost:8438/api/auth/login ^
-  -H "Content-Type: application/json" ^
-  -d "{\"email\":\"kirin@example.com\",\"password\":\"Password123!\"}"
+Before you begin, make sure you have the following installed:
 
-STEP 6 - open Mongo shell if you want to see data
-docker compose exec mongo mongosh -u root -p rootpass --authenticationDatabase admin
+- **Node.js** (v14 or higher) - [Download here](https://nodejs.org/)
+- **npm** (comes with Node.js) or **yarn**
+- **Expo CLI** - Install globally with: `npm install -g expo-cli`
+- **Expo Go app** on your mobile device:
+  - [iOS App Store](https://apps.apple.com/app/expo-go/id982107779)
+  - [Google Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
 
-inside mongosh
+## Installation
 
-use roommate_db
-show collections
-db.users.find().pretty()
-db.profiles.find().pretty()
+Follow these steps to set up the project on your local machine:
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/runWaterCols/CPT-322--RoomMate-A-University-Dormitory-Roommate-Matching-System.git
+cd CPT-322--RoomMate-A-University-Dormitory-Roommate-Matching-System
+```
+
+### 2. Navigate to the App Directory
+
+```bash
+cd roommate-app
+```
+
+### 3. Install Dependencies
+
+```bash
+npm install
+```
+
+Or if you're using yarn:
+
+```bash
+yarn install
+```
+
+## Running the App
+
+### Start the Development Server
+
+```bash
+npm start
+```
+
+Or with Expo CLI:
+
+```bash
+expo start
+```
+
+This will open the Expo DevTools in your browser and display a QR code.
+
+### Run on Your Device
+
+1. Open the **Expo Go** app on your mobile device
+2. Scan the QR code displayed in your terminal or browser
+3. The app will load on your device
+
+### Run on Emulator/Simulator
+
+- **iOS Simulator** (Mac only): Press `i` in the terminal
+- **Android Emulator**: Press `a` in the terminal
+
+## Project Structure
+
+```
+roommate-app/
+├── App.js                  # Main app component
+├── index.js               # App entry point
+├── package.json           # Dependencies and scripts
+├── app.json              # Expo configuration
+├── assets/               # Images and static files
+└── src/
+    └── screens/          # App screens
+    └── components/       # modular components 
+        
+```
+
+## Technologies Used
+
+- **React Native** - Mobile app framework
+- **Expo** - Development platform
+- **React Navigation** - Navigation library
+
+
+## Team Members
+
+- Vijay Deva, Logan Straight, London Zaineb
+
+## License
+
+This project is for educational purposes as part of CPT-322 course work.
+
