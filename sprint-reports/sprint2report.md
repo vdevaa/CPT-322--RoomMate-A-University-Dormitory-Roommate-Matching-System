@@ -1,5 +1,5 @@
 # Sprint 2 Report 
-Video Link: 
+Video Link: https://youtu.be/0RXyYaasjw0
 ## What's New (User Facing)
  * US-07 Send Messages to users
  * US-13 Swipe on potential Roomate
@@ -46,3 +46,4 @@ Here's what we'd like to improve:
   
 Here are changes we plan to implement in the next sprint:
    * We plan to implement more frequent meetings during the week to check in between frontend and back end teams. Also are creating a plan to solve the shortage of memebers in our group.
+
