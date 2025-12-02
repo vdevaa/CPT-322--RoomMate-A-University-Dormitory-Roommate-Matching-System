@@ -4,7 +4,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { ProfileScreen, WelcomeScreen, PreferencesScreen, LoginScreen, HomeScreen, MessagesScreen, ChatScreen } from './src/Screens.js'
+import { ProfileScreen, EditProfileScreen, WelcomeScreen, PreferencesScreen, LoginScreen, HomeScreen, MessagesScreen, ChatScreen } from './src/Screens.js'
 
 const Stack = createStackNavigator();
 
@@ -32,7 +32,12 @@ export default function App() {
         <Stack.Screen 
           name="Home" 
           component={HomeScreen} 
-          options={{ title: 'Home' }}
+          options={{ 
+            title: 'Home',
+            headerLeft: null,
+            gestureEnabled: false,
+            headerBackVisible: false,
+          }}
         />
         <Stack.Screen 
           name="Messages" 
@@ -48,6 +53,16 @@ export default function App() {
           name="Profile" 
           component={ProfileScreen} 
           options={{ title: 'Create Profile' }}
+        />
+        <Stack.Screen 
+          name="EditProfile" 
+          component={EditProfileScreen} 
+          options={{ 
+            title: 'Edit Profile',
+            headerLeft: null,
+            gestureEnabled: false,
+            headerBackVisible: false,
+          }}
         />
         <Stack.Screen 
           name="Preferences" 
