@@ -6,7 +6,7 @@ import styles from '../styles/Navbar.styles';
 export default function Navbar({ navigation, active = 'Home' }) {
   const tabs = [
     { key: 'Home', label: 'Home', onPress: () => navigation.navigate('Home') },
-    { key: 'Profile', label: 'Profile', onPress: () => navigation.navigate('Profile') },
+    { key: 'Profile', label: 'Profile', onPress: () => navigation.navigate('EditProfile') },
     { key: 'Messages', label: 'Messages', onPress: () => navigation.navigate('Messages') },
     // add more labels to the navbar here if needed, for now routing is to placeholders
   ];
