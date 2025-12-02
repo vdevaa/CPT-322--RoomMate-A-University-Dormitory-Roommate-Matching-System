@@ -29,7 +29,7 @@ export default function WelcomeScreen({ navigation }) {
           <Text style={styles.secondaryButtonText}>Log in</Text>
         </TouchableOpacity>
       </View>
-      <Navbar navigation={navigation} active={'Home'} />
+      {/* <Navbar navigation={navigation} active={'Home'} /> */}
     </SafeAreaView>
   );
 }
