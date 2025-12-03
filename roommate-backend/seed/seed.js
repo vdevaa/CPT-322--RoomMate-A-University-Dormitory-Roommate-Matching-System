@@ -4,7 +4,7 @@ import User from '../src/models/User.js';
 import Profile from '../src/models/Profile.js';
 import { hashPassword } from '../src/utils/auth.js';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/roommate_db';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://root:rootpass@localhost:27017/roommate_db?authSource=admin';
 
 const people = [
   { name: 'Kirin', email: 'kirin@example.com', hall: 'Streit Hall', room: '229',
@@ -40,6 +40,9 @@ async function main() {
   await User.deleteMany({});
   await Profile.deleteMany({});
 
+  const createdUsers = [];
+  const createdProfiles = [];
+
   for (const p of people) {
     const pass = 'Password123!';
     const user = await User.create({
@@ -48,7 +51,7 @@ async function main() {
       passwordHash: await hashPassword(pass),
       settings: { notifications: true, quietHoursStart: '22:00', quietHoursEnd: '08:00' }
     });
-    await Profile.create({
+    const profile = await Profile.create({
       user: user._id,
       hall: p.hall,
       room: p.room,
@@ -60,7 +63,62 @@ async function main() {
       hobbies: p.hobbies,
       preferences: p.prefs
     });
+    createdUsers.push(user);
+    createdProfiles.push(profile);
     console.log(`Created ${p.name} / ${p.email} (password: Password123!)`);
+  }
+
+  // Set up some mutual likes for demo purposes
+  // Find users and profiles by index (order matches people array)
+  const kirinUser = createdUsers[0]; // Kirin is first
+  const kirinProfile = createdProfiles[0];
+  
+  const benUser = createdUsers[1]; // Ben is second
+  const benProfile = createdProfiles[1];
+  
+  const alexanderUser = createdUsers[2]; // Alexander is third
+  const alexanderProfile = createdProfiles[2];
+  
+  const ianUser = createdUsers[3]; // Ian is fourth
+  const ianProfile = createdProfiles[3];
+
+  // Make Ben, Alexander, and Ian like Kirin (so when Kirin likes them back, they'll match)
+  if (kirinProfile && benProfile) {
+    if (!benProfile.likes.includes(kirinUser._id)) {
+      benProfile.likes.push(kirinUser._id);
+    }
+    if (!kirinProfile.likedBy.includes(benUser._id)) {
+      kirinProfile.likedBy.push(benUser._id);
+    }
+    await benProfile.save();
+    console.log('Set Ben to like Kirin');
+  }
+
+  if (kirinProfile && alexanderProfile) {
+    if (!alexanderProfile.likes.includes(kirinUser._id)) {
+      alexanderProfile.likes.push(kirinUser._id);
+    }
+    if (!kirinProfile.likedBy.includes(alexanderUser._id)) {
+      kirinProfile.likedBy.push(alexanderUser._id);
+    }
+    await alexanderProfile.save();
+    console.log('Set Alexander to like Kirin');
+  }
+
+  if (kirinProfile && ianProfile) {
+    if (!ianProfile.likes.includes(kirinUser._id)) {
+      ianProfile.likes.push(kirinUser._id);
+    }
+    if (!kirinProfile.likedBy.includes(ianUser._id)) {
+      kirinProfile.likedBy.push(ianUser._id);
+    }
+    await ianProfile.save();
+    console.log('Set Ian to like Kirin');
+  }
+
+  // Save Kirin's profile
+  if (kirinProfile) {
+    await kirinProfile.save();
   }
 
   console.log('Seed complete.');

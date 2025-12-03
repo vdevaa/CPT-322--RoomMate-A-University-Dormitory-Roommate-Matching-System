@@ -5,78 +5,80 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import styles from '../styles/LoginScreen.styles';
+import { login } from '../services/api';
 
-// using navigation stack is fine for now but when home screen is called this navigation stack should be thrown out
-// and replaced with a navbar and a new navigation stack to avoid returning here after a login
 export default function LoginScreen({ navigation }) {
-  const API_URL = 'https://localhost:8481/api/login'
-  // api params
-  const [userNameData, setUserNameData] = useState('');
-  const [passwordData, setPasswordData] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
+
+  const handleInputChange = (field, value) => {
+    if (field === 'email') {
+      setEmail(value);
+    } else {
+      setPassword(value);
+    }
+    // Enable button if both fields have content
+    const emailValue = field === 'email' ? value : email;
+    const passwordValue = field === 'password' ? value : password;
+    setButtonDisabled(!(emailValue && passwordValue));
+  };
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await login(email, password);
+      console.log('Login successful:', response);
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('Login error:', error);
+      Alert.alert('Login Failed', error.message || 'Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    // move these text inputs into component files later for now we will store data here though
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Log in</Text>
         <TextInput
           style={styles.textinput} 
-          placeholder="Username or Email"
-          value={userNameData}
-          onChangeText=
-          {(text) => {
-              setUserNameData(text);
-              if(userNameData !='' && passwordData != ''){
-                setButtonDisabled(false);
-              }
-          }}
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => handleInputChange('email', text)}
+          keyboardType="email-address"
+          autoCapitalize="none"
           required
         />
         <TextInput
           style={styles.textinput} 
           secureTextEntry={true}
           placeholder="Password"
-          value={passwordData}
-          onChangeText=
-          {(text) => {
-            setPasswordData(text);
-              if(userNameData !='' && passwordData != ''){
-                setButtonDisabled(false)
-              }
-          }}
+          value={password}
+          onChangeText={(text) => handleInputChange('password', text)}
           required
         />
         <TouchableOpacity 
-          style={buttonDisabled ? styles.buttonDisabled : styles.button}
-          disabled = {buttonDisabled}
-          // straight back to the welcome screen until we get a home screen
-          onPress={() => 
-          {
-            
-            fetch(API_URL, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                user: userNameData,
-                pass: passwordData,
-              }),
-            })
-              .then(response => response.json()) 
-              .then(data => console.log('Success:', data))
-              .catch(error => console.error('Error:', error));
-            navigation.navigate('Home')
-            // call api
-            // check result for session token; store session token in storage for home screen
-            // if api does not respond with one then throw error
-            
-          }
-        }
+          style={buttonDisabled || loading ? styles.buttonDisabled : styles.button}
+          disabled={buttonDisabled || loading}
+          onPress={handleLogin}
         >
-          <Text style={styles.buttonText}>Log in</Text>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Log in</Text>
+          )}
         </TouchableOpacity>
       </View>
     </SafeAreaView>

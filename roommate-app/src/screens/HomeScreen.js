@@ -1,53 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, Alert } from 'react-native';
+import { SafeAreaView, View, Text, Alert, ActivityIndicator } from 'react-native';
 import Navbar from '../components/Navbar';
 import SwipeableCard from '../components/SwipeableCard';
-import { mockProfiles, addSwipe, matches, swipeHistory } from '../mock/profiles';
-import { conversations } from '../mock/messages';
+import { getSuggestedMatches, likeUser, getStoredUser } from '../services/api';
 import styles from '../styles/HomeScreen.styles';
+
+// Transform API profile to card format
+const transformProfile = (apiProfile) => {
+  const user = apiProfile.user || {};
+  return {
+    id: apiProfile._id,
+    userId: user._id || user.id,
+    name: user.name || 'Unknown',
+    hall: apiProfile.hall || '',
+    room: apiProfile.room || '',
+    year: apiProfile.year || 'Freshman',
+    bio: apiProfile.bio || '',
+    sleepSchedule: apiProfile.sleepSchedule || 'Normal',
+    cleanliness: apiProfile.cleanliness || 'Average',
+    studyHabits: apiProfile.studyHabits || 'Quiet',
+    hobbies: apiProfile.hobbies || [],
+    preferences: apiProfile.preferences || {},
+  };
+};
 
 export default function HomeScreen({ navigation }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [availableProfiles, setAvailableProfiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [swipedIds, setSwipedIds] = useState(new Set());
 
   useEffect(() => {
-    // Filter out profiles that have already been swiped on
-    const swipedIds = [...new Set([...swipeHistory.liked, ...swipeHistory.passed])];
-    const available = mockProfiles.filter(p => !swipedIds.includes(p.id));
-    setAvailableProfiles(available);
-    setCurrentIndex(0);
+    loadProfiles();
   }, []);
 
-  const handleSwipeRight = () => {
+  const loadProfiles = async () => {
+    try {
+      setLoading(true);
+      const profiles = await getSuggestedMatches();
+      const transformed = profiles.map(transformProfile);
+      setAvailableProfiles(transformed);
+      setCurrentIndex(0);
+    } catch (error) {
+      console.error('Error loading profiles:', error);
+      Alert.alert('Error', 'Failed to load profiles. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSwipeRight = async () => {
     if (currentIndex >= availableProfiles.length) return;
     
     const profile = availableProfiles[currentIndex];
-    addSwipe(profile.id, 'right');
+    const userId = profile.userId;
     
-    // this is a mock matching simulation
-    // TODO LONDON: start of where backend implementation should go 
-    const isMatch = profile.id === 'p1' || profile.id === 'p2'; // Simulate matches
+    // Mark as swiped
+    setSwipedIds(prev => new Set([...prev, profile.id]));
     
-    if (isMatch) {
-      // Create a conversation for the match
-      const newConversation = {
-        id: `c_${profile.id}`,
-        participants: ['u_current', profile.userId],
-        otherUser: { id: profile.userId, name: profile.name },
-        matched: true,
-        lastMessageText: 'You matched! Start the conversation.',
-        lastMessageAt: Date.now(),
-      };
-      conversations.push(newConversation);
+    try {
+      // Like the user via API
+      const response = await likeUser(userId);
       
-      Alert.alert(
-        'It\'s a Match!',
-        `You and ${profile.name} have matched! You can now message each other.`,
-        [
-          { text: 'Keep Swiping', style: 'cancel' },
-          { text: 'View Messages', onPress: () => navigation.navigate('Messages') },
-        ]
-      );
+      if (response.matched) {
+        Alert.alert(
+          'It\'s a Match!',
+          `You and ${profile.name} have matched! You can now message each other.`,
+          [
+            { text: 'Keep Swiping', style: 'cancel' },
+            { text: 'View Messages', onPress: () => navigation.navigate('Messages') },
+          ]
+        );
+      }
+    } catch (error) {
+      console.error('Error liking user:', error);
+      Alert.alert('Error', 'Failed to like user. Please try again.');
     }
     
     moveToNext();
@@ -57,7 +84,8 @@ export default function HomeScreen({ navigation }) {
     if (currentIndex >= availableProfiles.length) return;
     
     const profile = availableProfiles[currentIndex];
-    addSwipe(profile.id, 'left'); // adds to passed array 
+    // Mark as swiped (passed)
+    setSwipedIds(prev => new Set([...prev, profile.id]));
     moveToNext();
   };
 
@@ -65,16 +93,25 @@ export default function HomeScreen({ navigation }) {
     if (currentIndex < availableProfiles.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      Alert.alert(
-        'No More Profiles',
-        'You\'ve seen all available profiles! Check back later for more.',
-        [{ text: 'OK' }]
-      );
+      // Load more profiles if we've seen all
+      loadProfiles();
     }
   };
 
   const currentProfile = availableProfiles[currentIndex];
   const nextProfile = availableProfiles[currentIndex + 1];
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.emptyContainer}>
+          <ActivityIndicator size="large" color="#E34234" />
+          <Text style={styles.emptyText}>Loading profiles...</Text>
+        </View>
+        <Navbar navigation={navigation} active={'Home'} />
+      </SafeAreaView>
+    );
+  }
 
   if (availableProfiles.length === 0) {
     return (
